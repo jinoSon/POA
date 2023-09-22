@@ -91,13 +91,13 @@ class Bitget:
         return free_balance_by_base
 
     def get_amount(self, order_info: MarketOrder) -> float:
-        if order_info.amount is not None and order_info.percent is not None:
+        if order_info.amount is not None and order_info.percent is not None and order_info.dallor is not None:
             raise error.AmountPercentBothError()
         elif order_info.amount is not None:
             result = order_info.amount
-        elif order_info.dollor is not None:
+        elif order_info.dallor is not None:
             current_price = self.get_price(order_info.unified_symbol)
-            result =  order_info.dollor *  order_info.leverage / current_price
+            result =  order_info.dallor *  order_info.leverage / current_price
         elif order_info.percent is not None:
             if order_info.is_entry or (order_info.is_spot and order_info.is_buy):
                 free_quote = self.get_balance(order_info.quote)
