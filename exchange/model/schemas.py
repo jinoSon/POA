@@ -187,6 +187,7 @@ class OrderRequest(BaseModel):
     type: Literal["market", "limit"] = "market"
     side: SIDE_LITERAL
     amount: float | None = None
+    dollor: float | None = None
     price: float | None = None
     cost: float | None = None
     percent: float | None = None
