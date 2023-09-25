@@ -177,7 +177,6 @@ class Bitget:
 
             try:
                 p = self.get_futures_position(order_info.unified_symbol)
-                self.market_close(order_info.unified_symbol)
             
                 import copy
                 sideOrder = copy.deepcopy(order_info)
@@ -190,6 +189,8 @@ class Bitget:
                     sideOrder.is_sell = None
                 sideOrder.is_close = True
                 sideOrder.is_entry = None
+                self.market_close(order_info.unified_symbol)
+
             except:
                 print("주문할 오더가 없음")
         
@@ -198,6 +199,26 @@ class Bitget:
     def market_sell(self, order_info: MarketOrder):
         sell_amount = self.get_amount(order_info)
         order_info.amount = sell_amount
+        if order_info.oneway :
+
+            try:
+                p = self.get_futures_position(order_info.unified_symbol)
+            
+                import copy
+                sideOrder = copy.deepcopy(order_info)
+                sideOrder.amount = p
+                if(order_info.is_buy == True):
+                    sideOrder.is_sell = True
+                    sideOrder.is_buy = None
+                if(order_info.is_sell == True):
+                    sideOrder.is_buy = True
+                    sideOrder.is_sell = None
+                sideOrder.is_close = True
+                sideOrder.is_entry = None
+                self.market_close(order_info.unified_symbol)
+
+            except:
+                print("주문할 오더가 없음")
         return self.market_order(order_info)
 
     def market_entry(self, order_info: MarketOrder):
@@ -216,6 +237,26 @@ class Bitget:
         if order_info.leverage is not None:
             self.set_leverage(order_info.leverage, symbol)
 
+        if order_info.oneway :
+
+            try:
+                p = self.get_futures_position(order_info.unified_symbol)
+            
+                import copy
+                sideOrder = copy.deepcopy(order_info)
+                sideOrder.amount = p
+                if(order_info.is_buy == True):
+                    sideOrder.is_sell = True
+                    sideOrder.is_buy = None
+                if(order_info.is_sell == True):
+                    sideOrder.is_buy = True
+                    sideOrder.is_sell = None
+                sideOrder.is_close = True
+                sideOrder.is_entry = None
+                self.market_close(order_info.unified_symbol)
+
+            except:
+                print("주문할 오더가 없음")
         try:
             return retry(
                 self.client.create_order,
