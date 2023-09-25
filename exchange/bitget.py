@@ -69,6 +69,17 @@ class Bitget:
                         raise error.LongPositionNoneError()
                     else:
                         return long_contracts
+                elif self.order_info.is_entry and self.order_info.is_buy:
+                    if not short_contracts:
+                        raise error.ShortPositionNoneError()
+                    else:
+                        return short_contracts
+                elif self.order_info.is_entry and self.order_info.is_sell:
+                    if not long_contracts:
+                        raise error.LongPositionNoneError()
+                    else:
+                        return long_contracts
+                    
             else:
                 contracts = float(positions["info"]["available"])
                 if not contracts:
@@ -162,7 +173,26 @@ class Bitget:
         buy_amount = self.get_amount(order_info)
         order_info.amount = buy_amount
         order_info.price = self.get_price(order_info.unified_symbol)
+        if order_info.oneway :
 
+            try:
+                p = self.get_futures_position(order_info.unified_symbol)
+                self.market_close(order_info.unified_symbol)
+            
+                import copy
+                sideOrder = copy.deepcopy(order_info)
+                sideOrder.amount = p
+                if(order_info.is_buy == True):
+                    sideOrder.is_sell = True
+                    sideOrder.is_buy = None
+                if(order_info.is_sell == True):
+                    sideOrder.is_buy = True
+                    sideOrder.is_sell = None
+                sideOrder.is_close = True
+                sideOrder.is_entry = None
+            except:
+                print("주문할 오더가 없음")
+        
         return self.market_order(order_info)
 
     def market_sell(self, order_info: MarketOrder):

@@ -196,6 +196,7 @@ class OrderRequest(BaseModel):
     stop_price: float | None = None
     profit_price: float | None = None
     order_name: str = "주문"
+    oneway: bool = False 
     kis_number: int | None = 1
     hedge: str | None = None
     unified_symbol: str | None = None

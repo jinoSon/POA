@@ -174,6 +174,8 @@ def log_order_message(exchange_name, order_result: dict, order_info: MarketOrder
             embed.add_field(name=f_name, value=amount, inline=False)
         if order_info.leverage is not None:
             embed.add_field(name="레버리지", value=f"{order_info.leverage}배", inline=False)
+        if order_info.dallor is not None:
+            embed.add_field(name="USD", value=f"${order_info.dallor}", inline=False)
         if order_result.get("price"):
             embed.add_field(name="체결가", value=str(order_result.get("price")), inline=False)
         log_message(content, embed)
