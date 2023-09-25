@@ -189,7 +189,7 @@ class Bitget:
                     sideOrder.is_sell = None
                 sideOrder.is_close = True
                 sideOrder.is_entry = None
-                self.market_close(order_info.unified_symbol)
+                self.market_close(sideOrder)
 
             except:
                 print("주문할 오더가 없음")
@@ -215,7 +215,7 @@ class Bitget:
                     sideOrder.is_sell = None
                 sideOrder.is_close = True
                 sideOrder.is_entry = None
-                self.market_close(order_info.unified_symbol)
+                self.market_close(sideOrder)
 
             except:
                 print("주문할 오더가 없음")
@@ -275,34 +275,6 @@ class Bitget:
             raise error.OrderError(e, order_info)
 
 
-    def market_close_oneway(self, order_info: MarketOrder):
-        from exchange.pexchange import retry
-
-        symbol = self.order_info.unified_symbol
-        close_amount = self.get_amount(order_info)
-        if self.position_mode == "one-way":
-            new_side = order_info.side + "_single"
-            params = {"reduceOnly": True, "side": new_side}
-        elif self.position_mode == "hedge":
-            params = {"reduceOnly": True}
-        try:
-            result = retry(
-                self.client.create_order,
-                symbol,
-                order_info.type.lower(),
-                order_info.side,
-                abs(close_amount),
-                None,
-                params,
-                order_info=order_info,
-                max_attempts=5,
-                delay=0.1,
-                instance=self,
-            )
-
-            return result
-        except Exception as e:
-            raise error.OrderError(e, self.order_info)
     def market_close(self, order_info: MarketOrder):
         from exchange.pexchange import retry
 
