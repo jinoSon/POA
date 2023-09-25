@@ -59,12 +59,12 @@ class Bitget:
                     elif position["side"] == "short":
                         short_contracts = float(position["info"]["available"])
 
-                if self.order_info.is_close and self.order_info.is_buy:
+                if self.order_info.is_close and self.order_info.is_sell:
                     if not short_contracts:
                         raise error.ShortPositionNoneError()
                     else:
                         return short_contracts
-                elif self.order_info.is_close and self.order_info.is_sell:
+                elif self.order_info.is_close and self.order_info.is_buy:
                     if not long_contracts:
                         raise error.LongPositionNoneError()
                     else:
