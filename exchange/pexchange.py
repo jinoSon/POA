@@ -236,6 +236,10 @@ def retry(
                             instance.position_mode = "one-way"
                             new_side = order_info.side + "_single"
                             new_params = {"side": new_side}
+                            if order_info.profit_price == None :
+                                new_params["presetTakeProfitPrice"] = order_info.profit_price
+                            if order_info.stop_price == None :
+                                new_params["presetStopLossPrice"] = order_info.stop_price
                             args = tuple(new_side if i == 2 else arg for i, arg in enumerate(args))
                             args = tuple(new_params if i == 5 else arg for i, arg in enumerate(args))
                         elif instance.position_mode == "one-way":
@@ -244,6 +248,10 @@ def retry(
                                 new_params = {}
                             elif order_info.is_close:
                                 new_params = {"reduceOnly": True}
+                            if order_info.profit_price == None :
+                                new_params["presetTakeProfitPrice"] = order_info.profit_price
+                            if order_info.stop_price == None :
+                                new_params["presetStopLossPrice"] = order_info.stop_price
                             args = tuple(new_params if i == 5 else arg for i, arg in enumerate(args))
 
                     elif "two-way positions" in str(e):
@@ -251,6 +259,10 @@ def retry(
                             instance.position_mode = "one-way"
                             new_side = order_info.side + "_single"
                             new_params = {"reduceOnly": True, "side": new_side}
+                            if order_info.profit_price == None :
+                                new_params["presetTakeProfitPrice"] = order_info.profit_price
+                            if order_info.stop_price == None :
+                                new_params["presetStopLossPrice"] = order_info.stop_price
                             args = tuple(new_side if i == 2 else arg for i, arg in enumerate(args))
                             args = tuple(new_params if i == 5 else arg for i, arg in enumerate(args))
                         elif instance.position_mode == "one-way":
@@ -259,6 +271,10 @@ def retry(
                                 new_params = {}
                             elif order_info.is_close:
                                 new_params = {"reduceOnly": True}
+                            if order_info.profit_price == None :
+                                new_params["presetTakeProfitPrice"] = order_info.profit_price
+                            if order_info.stop_price == None :
+                                new_params["presetStopLossPrice"] = order_info.stop_price
                             args = tuple(new_params if i == 5 else arg for i, arg in enumerate(args))
                     else:
                         attempts = max_attempts
