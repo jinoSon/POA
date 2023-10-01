@@ -273,6 +273,21 @@ class Bitget:
                 delay=0.1,
                 instance=self,
             )
+                        
+            # Stop-Loss 주문 생성
+            import time
+            if order_info.stop_price != None or  order_info.profit_price != None :
+                time.sleep(0.1)
+            if order_info.stop_price != None :
+                paramsSL ={}
+                paramsSL["stopLossPrice"] = order_info.stop_price
+                self.client.create_order(symbol, order_info.type.lower(), order_info.side, abs(entry_amount),None,paramsSL)
+            if order_info.profit_price != None :
+                paramsTP ={}
+                paramsTP["takeProfitPrice"] = order_info.profit_price
+                self.client.create_order(symbol, order_info.type.lower(), order_info.side, abs(entry_amount),None,paramsTP)
+            
+
             return ret
 
         except Exception as e:
