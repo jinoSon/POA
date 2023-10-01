@@ -236,10 +236,7 @@ class Bitget:
             params = {}
         if order_info.leverage is not None:
             self.set_leverage(order_info.leverage, symbol)
-        # if order_info.profit_price != None :
-        #     params["takeProfitPrice"] = str(order_info.profit_price)
-        # if order_info.stop_price != None :
-        #     params["stopPrice"] = str(order_info.stop_price)
+
         if order_info.oneway :
 
             try:
@@ -261,7 +258,9 @@ class Bitget:
             except:
                 print("주문할 오더가 없음")
         try:
-            return retry(
+            
+            
+            ret =  retry(
                 self.client.create_order,
                 symbol,
                 order_info.type.lower(),
@@ -274,6 +273,19 @@ class Bitget:
                 delay=0.1,
                 instance=self,
             )
+            param1 = {}
+            if order_info.profit_price != None :
+                param1["takeProfitPrice"] = str(order_info.profit_price)
+            if order_info.stop_price != None :
+                param1["stopLossPrice"] = str(order_info.stop_price)
+            self.client.create_order( 
+                symbol,
+                order_info.type.lower(),
+                order_info.side,
+                abs(entry_amount),
+                None,
+                param1)
+            return ret
 
         except Exception as e:
             raise error.OrderError(e, order_info)
