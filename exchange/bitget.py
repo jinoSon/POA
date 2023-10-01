@@ -273,18 +273,6 @@ class Bitget:
                 delay=0.1,
                 instance=self,
             )
-            param1 = {}
-            if order_info.profit_price != None :
-                param1["takeProfitPrice"] = str(order_info.profit_price)
-            if order_info.stop_price != None :
-                param1["stopLossPrice"] = str(order_info.stop_price)
-            self.client.create_order( 
-                symbol,
-                order_info.type.lower(),
-                order_info.side,
-                abs(entry_amount),
-                None,
-                param1)
             return ret
 
         except Exception as e:
