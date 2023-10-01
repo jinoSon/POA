@@ -238,8 +238,8 @@ class Bitget:
             self.set_leverage(order_info.leverage, symbol)
         # if order_info.profit_price != None :
         #     params["takeProfitPrice"] = str(order_info.profit_price)
-        if order_info.stop_price != None :
-            params["stopPrice"] = str(order_info.stop_price)
+        # if order_info.stop_price != None :
+        #     params["stopPrice"] = str(order_info.stop_price)
         if order_info.oneway :
 
             try:
